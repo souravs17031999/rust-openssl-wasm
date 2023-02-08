@@ -7,6 +7,11 @@
 use std::env;
 
 fn main() {
+    let src_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
+
+    env::set_var( "OPENSSL_STATIC","1");
+    env::set_var( "OPENSSL_DIR",format!("{}/../openssl-wasm/precompiled", src_dir));
+
     if env::var("DEP_OPENSSL_LIBRESSL").is_ok() {
         println!("cargo:rustc-cfg=libressl");
     }
