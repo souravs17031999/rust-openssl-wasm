@@ -5,6 +5,7 @@
 )]
 
 extern crate autocfg;
+
 #[cfg(feature = "bindgen")]
 extern crate bindgen;
 extern crate cc;
@@ -61,6 +62,7 @@ fn find_openssl(target: &str) -> (Vec<PathBuf>, PathBuf) {
             return find_vendored::get_openssl(target);
         }
     }
+
     find_normal::get_openssl(target)
 }
 
@@ -75,6 +77,11 @@ fn check_ssl_kind() {
 }
 
 fn main() {
+    let src_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
+
+    env::set_var( "OPENSSL_STATIC","1");
+    env::set_var( "OPENSSL_DIR",format!("{}/../openssl-wasm/precompiled", src_dir));
+
     check_rustc_versions();
 
     check_ssl_kind();
